@@ -238,7 +238,7 @@ class _MySingleVisibleContainerAppState
             ),
           ).animate().fadeIn(),
           const SizedBox(height: 30),
-          SizedBox(height: 40.0),
+         /* SizedBox(height: 40.0),*/
           // Animated Containers
           for (int i = 1; i <= experience.length; i++)
             AnimatedAlign(
@@ -288,7 +288,29 @@ class _MySingleVisibleContainerAppState
               ),
             ),
           kIsWeb?SizedBox(height: 40.0):SizedBox(height: 10.0),
-          kIsWeb?Row(
+          /*kIsWeb?*/Expanded(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: List.generate(3, (index) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: ElevatedButton(
+                    onPressed: () => _toggleVisibility(index + 1),
+                    child: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Text(experience[index]["year"]),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.indigo, //primary: buttonColors[0], // Text color is white
+                      elevation: _visibleIndex == index + 1 ? 4 : 0, // Apply elevation only when visible
+                    ),
+                  ),
+                );
+              }),
+            ),
+          )/*:
+        */  /*Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: List.generate(3, (index) {
@@ -301,32 +323,13 @@ class _MySingleVisibleContainerAppState
                     child: Text(experience[index]["year"]),
                   ),
                   style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white, //primary: buttonColors[0], // Text color is white
+                    foregroundColor: Colors.indigo,// primary: buttonColors[0], // Text color is white
                     elevation: _visibleIndex == index + 1 ? 4 : 0, // Apply elevation only when visible
                   ),
                 ),
               );
             }),
-          ):Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: List.generate(3, (index) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                child: ElevatedButton(
-                  onPressed: () => _toggleVisibility(index + 1),
-                  child: Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Text(experience[index]["year"]),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white,// primary: buttonColors[0], // Text color is white
-                    elevation: _visibleIndex == index + 1 ? 4 : 0, // Apply elevation only when visible
-                  ),
-                ),
-              );
-            }),
-          )
+          )*/
         ],
       ),
     );
