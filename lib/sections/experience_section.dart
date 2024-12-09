@@ -301,8 +301,7 @@ class _MySingleVisibleContainerAppState
                     child: Text(experience[index]["year"]),
                   ),
                   style: ElevatedButton.styleFrom(
-                    primary: buttonColors[0], // Button color is set to black
-                    onPrimary: Colors.white, // Text color is white
+                    foregroundColor: Colors.white, //primary: buttonColors[0], // Text color is white
                     elevation: _visibleIndex == index + 1 ? 4 : 0, // Apply elevation only when visible
                   ),
                 ),
@@ -321,8 +320,7 @@ class _MySingleVisibleContainerAppState
                     child: Text(experience[index]["year"]),
                   ),
                   style: ElevatedButton.styleFrom(
-                    primary: buttonColors[0], // Button color is set to black
-                    onPrimary: Colors.white, // Text color is white
+                    foregroundColor: Colors.white,// primary: buttonColors[0], // Text color is white
                     elevation: _visibleIndex == index + 1 ? 4 : 0, // Apply elevation only when visible
                   ),
                 ),
