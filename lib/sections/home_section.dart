@@ -1,5 +1,5 @@
-/*import 'dart:html';
-import 'dart:typed_data';*/
+import 'dart:html';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
@@ -37,9 +37,9 @@ class _HomeSectionState extends State<HomeSection> {
   void downloadFile(String fileName) {
     final url = '$fileName';
 
-   /* final anchor = AnchorElement(href: url)
+    final anchor = AnchorElement(href: url)
       ..setAttribute('download', fileName)
-      ..click();*/
+      ..click();
   }
  /* Future<void> downloadFile(String assetName, String fileName) async {
     try {

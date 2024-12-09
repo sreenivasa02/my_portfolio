@@ -58,14 +58,25 @@ class ContactSection extends StatelessWidget {
   Widget _buildSocialButton(String label, IconData icon, String url) {
     return ElevatedButton.icon(
       onPressed: () => launchUrl(Uri.parse(url)),
-      icon: FaIcon(icon),
-      label: Text(label),
+      icon: FaIcon(
+        icon,
+        color: Colors.white, // White icon color
+      ),
+      label: Text(
+        label,
+        style: const TextStyle(
+          color: Colors.white, // White text color
+          fontWeight: FontWeight.bold, // Optional: Bold text
+        ),
+      ),
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.blue.shade700,
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+        foregroundColor: Colors.white, // Applies to text and icon by default
       ),
     );
   }
+
 
   Widget _buildContactInfoText(String info, IconData icon) {
     return Row(
