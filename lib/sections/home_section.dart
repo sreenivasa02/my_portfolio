@@ -1,6 +1,8 @@
 import 'dart:html';
 import 'dart:typed_data';
 
+import 'package:file_saver/file_saver.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/services.dart';
@@ -34,13 +36,88 @@ class _HomeSectionState extends State<HomeSection> {
       child: isSmallScreen ? _buildMobileLayout() : _buildDesktopLayout(),
     );
   }
-  void downloadFile(String fileName) {
+  void downloadFile(String fileName) async {
+    final byteData = await rootBundle.load('assets/resume.pdf');
+    final List<int> bytes = byteData.buffer.asUint8List();
+
+
+      // For mobile
+      final result = await FileSaver.instance.saveFile(
+        name: fileName,
+        bytes: Uint8List.fromList(bytes),
+        mimeType:MimeType.other ,
+      );
+      if (result != null) {
+        print('File saved to: $result');
+        _showSuccessDialog(context);
+      }
+    }
+// Function to show the success dialog
+  void _showSuccessDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Smiley face with green tick
+                Icon(
+                  Icons.check_circle,
+                  size: 50,
+                  color: Colors.green,
+                ),
+                const SizedBox(height: 10),
+                // Success message
+                const Text(
+                  "Download Successful!",
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.green,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                const Text(
+                  "Your file has been saved successfully.",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 12, color: Colors.black),
+                ),
+                const SizedBox(height: 10),
+                // Close button
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(); // Close the dialog
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                  ),
+                  child: const Text("OK"),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  /*void downloadFile(String fileName) {
     final url = '$fileName';
 
     final anchor = AnchorElement(href: url)
       ..setAttribute('download', fileName)
       ..click();
-  }
+  }*/
  /* Future<void> downloadFile(String assetName, String fileName) async {
     try {
       // Get the directory path
@@ -119,8 +196,8 @@ class _HomeSectionState extends State<HomeSection> {
             // Add resume download logic here
              downloadFile(resumeAssetPath);
           },
-          icon: const Icon(Icons.download),
-          label: const Text('Download Resume'),
+          icon: const Icon(Icons.download,color: Colors.white,),
+          label: const Text('Download Resume',style: TextStyle(fontWeight:FontWeight.w900),),
           style: ElevatedButton.styleFrom(
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
             backgroundColor: Colors.blue.shade700,

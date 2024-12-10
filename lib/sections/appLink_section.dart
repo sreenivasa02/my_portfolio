@@ -80,53 +80,56 @@ class _AppLinksSectionState extends State<AppLinksSection> {
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: SizedBox(
-                          width: 200,
+                          width: 230,
                           child: Padding(
                             padding: const EdgeInsets.all(12.0),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Container(
-                                  height: 100,
-                                  width: 200,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(12),
-                                    image: DecorationImage(
-                                      image: AssetImage(item['appImage'] ?? ''),
-                                      fit: BoxFit.contain,
+                            child: SingleChildScrollView(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    height: 100,
+                                    width: 200,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(12),
+                                      image: DecorationImage(
+                                        image: AssetImage(item['appImage'] ?? ''),
+                                        fit: BoxFit.contain,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                const SizedBox(height: 10),
-                                Text(
-                                  item['appName'] ?? '',
-                                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.blue.shade900,
+                                  const SizedBox(height: 10),
+                                  Text(
+                                    item['appName'] ?? '',
+                                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.blue.shade900,
+                                    ),
+                                    textAlign: TextAlign.center,
                                   ),
-                                  textAlign: TextAlign.center,
-                                ),
-                                const SizedBox(height: 10),
-                                ElevatedButton(
-                                  onPressed: () {
-                                    final appUrl = item['appUrl'] ?? '';
-                                    if (appUrl.isNotEmpty) {
-                                      launchUrl(Uri.parse(appUrl));
-                                    }
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.blue.shade900,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20),
+                                  const SizedBox(height: 10),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      final appUrl = item['appUrl'] ?? '';
+                                      if (appUrl.isNotEmpty) {
+                                        launchUrl(Uri.parse(appUrl));
+                                      }
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.blue.shade900,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                    ),
+                                    child: const Text(
+                                      'Install',
+                                      style: TextStyle(color: Colors.white),
                                     ),
                                   ),
-                                  child: const Text(
-                                    'Install',
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                ),
-                              ],
-                            ),
+                                ],
+                              ),
+                            )
+                            ,
                           ),
                         ),
                       ),

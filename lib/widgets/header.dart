@@ -86,6 +86,99 @@ import '../providers/scroll_provider.dart';
 class Header extends StatelessWidget {
   final List<String> sections;
   final ScrollController scrollController;
+  final ValueNotifier<int> selectedIndexNotifier; // Added to track selected index
+
+  const Header({
+    super.key,
+    required this.sections,
+    required this.scrollController,
+    required this.selectedIndexNotifier,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      padding: const EdgeInsets.all(16.0),
+      color: Colors.blue,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          // Portfolio title
+          const Text(
+            "PortFolio",
+            style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+
+          // Responsive content: Drawer menu for small screens
+          if (screenWidth < 600)
+            Builder(
+              builder: (context) => IconButton(
+                icon: const Icon(Icons.menu, color: Colors.white),
+                onPressed: () => Scaffold.of(context).openEndDrawer(),
+              ),
+            )
+          else
+          // Navigation buttons for larger screens
+            Flexible(
+              child: SizedBox(
+                width: 800,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: List.generate(sections.length, (index) {
+                    return ValueListenableBuilder<int>(
+                      valueListenable: selectedIndexNotifier,
+                      builder: (context, selectedIndex, child) {
+                        return InkWell(
+                          onTap: () {
+                            final targetPosition =
+                                MediaQuery.of(context).size.height * index;
+
+                            // Update selected index
+                            selectedIndexNotifier.value = index;
+
+                            // Animate scroll to the selected section
+                            scrollController.animateTo(
+                              targetPosition,
+                              duration: const Duration(milliseconds: 500),
+                              curve: Curves.easeInOut,
+                            );
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16.0, vertical: 8.0),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.2), // Background color with transparency
+                              borderRadius: BorderRadius.circular(16.0), // Rounded corners
+                              border: Border.all(
+                                color: selectedIndex == index
+                                    ? Colors.orange // Orange border for selected
+                                    : Colors.white, // Default border color
+                                width: 2.0,
+                              ),
+                            ),
+                            child: Text(
+                              sections[index],
+                              style: const TextStyle(
+                                  color: Colors.white, fontSize: 18),
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  }),
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
+/*class Header extends StatelessWidget {
+  final List<String> sections;
+  final ScrollController scrollController;
 
   const Header({
     super.key,
@@ -119,9 +212,9 @@ class Header extends StatelessWidget {
             )
           else
           // Navigation buttons for larger screens
-            Container(
-              width: 800,
-              child: Flexible(
+            Flexible(
+              child: SizedBox(
+                width: 800,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: sections.map((section) {
@@ -129,7 +222,7 @@ class Header extends StatelessWidget {
                       onTap: () {
                         final index = sections.indexOf(section);
                         final targetPosition = MediaQuery.of(context).size.height * index;
-
+                
                         // Animate scroll to the selected section
                         scrollController.animateTo(
                           targetPosition,
@@ -158,7 +251,7 @@ class Header extends StatelessWidget {
       ),
     );
   }
-}
+}*/
 
 
 /*class Header extends StatelessWidget {

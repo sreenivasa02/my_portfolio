@@ -10,7 +10,7 @@ import '../sections/home_section.dart';
 import '../sections/skills_section.dart';
 import '../widgets/header.dart';
 
-class HomeScreen extends StatelessWidget {
+/*class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
@@ -83,8 +83,104 @@ class HomeScreen extends StatelessWidget {
       ),
     );
   }
-}
+}*/
 
+
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final ScrollController _scrollController = ScrollController();
+    final ValueNotifier<int> selectedIndexNotifier = ValueNotifier<int>(0); // Initial selected index
+    final List<String> sections = ['Home', 'About', 'Experience', 'App Links', 'Skills', 'Contact'];
+
+    // Pass the ScrollController to ScrollProvider
+    Provider.of<ScrollProvider>(context, listen: false).setScrollController(_scrollController);
+
+    return Scaffold(
+      endDrawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(color: Colors.blue),
+              child: const Text(
+                "Navigation",
+                style: TextStyle(color: Colors.white, fontSize: 24),
+              ),
+            ),
+            ...List.generate(sections.length, (index) {
+              return ValueListenableBuilder<int>(
+                valueListenable: selectedIndexNotifier,
+                builder: (context, selectedIndex, child) {
+                  return ListTile(
+                    tileColor: selectedIndex == index
+                        ? Colors.blue.withOpacity(0.1) // Highlight background for selected
+                        : null,
+                    title: Text(
+                      sections[index],
+                      style: TextStyle(
+                        color: selectedIndex == index ? Colors.orange : Colors.black, // Text color for selected
+                        fontWeight: selectedIndex == index ? FontWeight.bold : FontWeight.normal,
+                      ),
+                    ),
+                    onTap: () {
+                      Navigator.of(context).pop(); // Close the drawer
+
+                      // Update selected index
+                      selectedIndexNotifier.value = index;
+
+                      // Calculate the target position and animate scroll
+                      final targetPosition = MediaQuery.of(context).size.height * index;
+
+                      _scrollController.animateTo(
+                        targetPosition,
+                        duration: const Duration(milliseconds: 500),
+                        curve: Curves.easeInOut,
+                      );
+                    },
+                  );
+                },
+              );
+            }),
+          ],
+        ),
+      ),
+      body: Column(
+        children: [
+          Header(
+            sections: sections,
+            scrollController: _scrollController,
+            selectedIndexNotifier: selectedIndexNotifier, // Pass selected index notifier
+          ),
+          Expanded(
+            child: SingleChildScrollView(
+              controller: _scrollController,
+              child: Column(
+                children: List.generate(
+                  sections.length,
+                      (index) => Container(
+                    color: index.isEven ? Colors.blue.shade50 : Colors.indigo[100],
+                    height: MediaQuery.of(context).size.height, // Each section fills the screen height
+                    child: [
+                      const HomeSection(),
+                      const AboutSection(),
+                      MySingleVisibleContainerApp(),
+                      const AppLinksSection(),
+                      const SkillsSection(),
+                      const ContactSection(),
+                    ][index],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
 
 /*class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});

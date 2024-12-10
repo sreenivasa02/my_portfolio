@@ -237,7 +237,9 @@ class _MySingleVisibleContainerAppState
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(height: 20,),
+            SizedBox(
+              height: 20,
+            ),
             Text(
               'Experience',
               style: Theme.of(context).textTheme.headlineLarge?.copyWith(
@@ -256,88 +258,69 @@ class _MySingleVisibleContainerAppState
                 duration: Duration(seconds: 1), // Animation duration
                 child: Visibility(
                   visible: _visibleIndex == i,
-                  child: Stack(
-                    children: [
-                      // Outer border
-                      Container(
-                        width: 350.0,
-                        margin: const EdgeInsets.symmetric(vertical: 8.0),
-                        decoration: BoxDecoration(
-                          border: Border.all(width: 3, color: Colors.white), // Outer border
-                          borderRadius: BorderRadius.circular(14.0),
+                  child: Container(
+                    width: 350.0,
+                    padding: EdgeInsets.all(16.0),
+                    margin: EdgeInsets.symmetric(vertical: 8.0),
+                    decoration: BoxDecoration(
+                      border: Border.all(width: 1, color: Colors.white),
+                      color:
+                          containerColors[i - 1], // Set the transparent color
+                      borderRadius: BorderRadius.circular(12.0),
+                      boxShadow: _visibleIndex == i
+                          ? [
+                              BoxShadow(
+                                  color: Colors.black87,
+                                  blurRadius: 6.0,
+                                  offset: Offset(0, 2))
+                            ]
+                          : [],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          experience[i - 1]["year"],
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 22.0,
+                              fontWeight: FontWeight.bold),
                         ),
-                      ),
-                      // Inner container with content and inner border
-                      Container(
-                        width: 350.0,
-                        padding: const EdgeInsets.all(16.0),
-                        margin: const EdgeInsets.symmetric(vertical: 8.0),
-                        decoration: BoxDecoration(
-                          border: Border.all(width: 1, color: Colors.white), // Inner border
-                          color: containerColors[i - 1], // Set the transparent color
-                          borderRadius: BorderRadius.circular(12.0),
-                          boxShadow: _visibleIndex == i
-                              ? [
-                            const BoxShadow(
-                              color: Colors.black87,
-                              blurRadius: 6.0,
-                              offset: Offset(0, 2),
-                            )
-                          ]
-                              : [],
+                        SizedBox(height: 8.0),
+                        Text(
+                          experience[i - 1]["companyName"],
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold),
                         ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              experience[i - 1]["year"],
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 22.0,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(height: 8.0),
-                            Text(
-                              experience[i - 1]["companyName"],
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(height: 8.0),
-                            Text(
-                              experience[i - 1]["role"],
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(height: 8.0),
-                            Text(
-                              experience[i - 1]["description"],
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 14.0,
-                              ),
-                              textAlign: TextAlign.left, // Align text to the left
-                            ),
-                          ],
+                        SizedBox(height: 8.0),
+                        Text(
+                          experience[i - 1]["role"],
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.bold),
                         ),
-                      ),
-                    ],
+                        SizedBox(height: 8.0),
+                        Text(
+                          experience[i - 1]["description"],
+                          style: TextStyle(color: Colors.white, fontSize: 14.0),
+                          textAlign: TextAlign.left, // Align text to the left
+                        ),
+                      ],
+                    ),
                   ),
-
                 ),
               ),
-SizedBox(height: 40,),
+            SizedBox(
+              height: 40,
+            ),
             screenWidth > 600
                 ? Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    children: List.generate(3, (index) {
+                    children: List.generate(experience.length, (index) {
                       return Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10.0),
                         child: ElevatedButton(
@@ -349,6 +332,13 @@ SizedBox(height: 40,),
                             elevation: _visibleIndex == index + 1
                                 ? 4
                                 : 0, // Apply elevation only when visible
+                            side: BorderSide(
+                              color: _visibleIndex == index + 1
+                                  ? Colors.orange
+                                  : Colors
+                                      .white, // Orange border for the active button
+                              width: 2, // Border width
+                            ),
                             textStyle: const TextStyle(
                               fontWeight: FontWeight.bold, // Bold text
                               fontSize: 16, // Optional: Adjust font size
@@ -365,7 +355,7 @@ SizedBox(height: 40,),
                 : Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    children: List.generate(3, (index) {
+                    children: List.generate(experience.length, (index) {
                       return Padding(
                         padding: const EdgeInsets.symmetric(vertical: 10.0),
                         child: ElevatedButton(
@@ -377,9 +367,16 @@ SizedBox(height: 40,),
                             elevation: _visibleIndex == index + 1
                                 ? 4
                                 : 0, // Apply elevation only when visible
+                            side: BorderSide(
+                              color: _visibleIndex == index + 1
+                                  ? Colors.orange
+                                  : Colors
+                                      .white, // Orange border for the active button
+                              width: 2, // Border width
+                            ),
                             textStyle: const TextStyle(
                               fontWeight: FontWeight.bold, // Bold text
-                              fontSize: 16, // Optional: Adjust font size
+                              fontSize: 16, // Adjust font size
                             ),
                           ),
                           child: Padding(
